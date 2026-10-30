@@ -1,0 +1,31 @@
+version: '3.6'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile 
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:5000"
+    networks:
+      - docker-task-network
+  
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    environment:
+      BACKEND_URL: "http://backend:5000"
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - docker-task-network
+
+networks:
+  docker-task-network: {}
